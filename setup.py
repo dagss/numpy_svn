@@ -6,8 +6,8 @@ efficiently manipulate large multi-dimensional arrays of arbitrary
 records without sacrificing too much speed for small multi-dimensional
 arrays.  NumPy is built on the Numeric code base and adds features
 introduced by numarray as well as an extended C-API and the ability to
-create arrays of arbitrary type which also makes NumPy suitable for
-interfacing with general-purpose data-base applications.
+create arrays of arbitrary type which makes NumPy suitable for
+interfacing with general purpose data-base applications.
 
 There are also basic facilities for discrete fourier transform,
 basic linear algebra and random number generation.
@@ -47,14 +47,12 @@ def configuration(parent_package='',top_path=None):
                        quiet=True)
     
     config.add_subpackage('numpy')
-        
-    config.add_data_files(('numpy','*.txt'),
-                          ('numpy','COMPATIBILITY'),
-                          ('numpy','scipy_compatibility'), 
-                          ('numpy','site.cfg.example'))
 
+    config.add_data_files(('numpy',['*.txt','COMPATIBILITY',
+                                    'scipy_compatibility']))
+    
     config.get_version('numpy/version.py') # sets config.version
-
+    
     return config
 
 def setup_package():
@@ -67,8 +65,10 @@ def setup_package():
     sys.path.insert(0,local_path)
 
     try:
+        from numpy.version import version
         setup(
             name = 'numpy',
+            version = version, # will be overwritten by configuration version
             maintainer = "NumPy Developers",
             maintainer_email = "numpy-discussion@lists.sourceforge.net",
             description = DOCLINES[0],
